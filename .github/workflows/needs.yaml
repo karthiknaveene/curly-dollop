@@ -1,0 +1,33 @@
+name: Test Job Dependencies
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Print message from job1
+        run: echo "This is job1"
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1  # This job depends on job1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Print message from job2
+        run: echo "This is job2, and it depends on job1"
+
+  job3:
+    runs-on: ubuntu-latest
+    needs: [job1, job2]  # This job depends on both job1 and job2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Print message from job3
+        run: echo "This is job3, and it depends on job1 and job2"
